@@ -9,6 +9,7 @@ import { Component } from '@angular/core';
 export class AppComponent {
   title = 'call-center-app';
   isMenuOpen = true;
+  pageTitle = 'Dashboard';
 
   toggleMenu() {
     this.isMenuOpen = !this.isMenuOpen;
@@ -23,5 +24,9 @@ export class AppComponent {
       e.preventDefault();
       document.getElementById("wrapper")?.classList.toggle("toggled");
     });
+  }
+
+  setPageTitle(title: string) {
+    this.pageTitle = title;
   }
 }

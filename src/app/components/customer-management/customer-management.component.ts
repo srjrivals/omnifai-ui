@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CustomerService } from '../../services/customer.service';
 import { Customer } from '../../models/customer';
+import { NavbarService } from '../../services/navbar.service';
 
 @Component({
   selector: 'app-customer-management',
@@ -9,6 +10,7 @@ import { Customer } from '../../models/customer';
 })
 export class CustomerManagementComponent implements OnInit {
 
+  pageTitle = 'Customer Management';
   customers: Customer[] = [];
   filteredCustomers: Customer[] = [];
   editingCustomer: Customer | null = null;
@@ -25,9 +27,14 @@ export class CustomerManagementComponent implements OnInit {
   sortColumn = '';
   sortDirection: 'asc' | 'desc' = 'asc';
 
-  constructor(private customerService: CustomerService) { }
+  constructor(private customerService: CustomerService, private navbarService: NavbarService) { }
 
   ngOnInit(): void {
+    this.navbarService.setPageTitle(this.pageTitle);
+    this.navbarService.setMenuItems([
+      { label: 'Customer List', action: this.showCustomerList.bind(this), class: 'btn-secondary' },
+      { label: 'Upload', action: this.uploadCustomers.bind(this), class: 'btn-success' }
+    ]);
     this.getCustomers();
   }
 
@@ -128,5 +135,15 @@ export class CustomerManagementComponent implements OnInit {
         this.fileToUpload = null;
       });
     }
+  }
+
+  showCustomerList() {
+    // Implement the logic to show customer list
+    console.log('Customer List button clicked');
+  }
+
+  uploadCustomers() {
+    // Implement the logic to upload customers
+    console.log('Upload button clicked');
   }
 }

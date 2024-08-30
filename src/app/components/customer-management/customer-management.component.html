@@ -1,68 +1,90 @@
 <div class="container mt-4">
-    <h2 class="mb-4">Customer Management</h2>
-  
-    <!-- Search Box -->
-    <div class="form-group">
-      <input type="text" [(ngModel)]="searchQuery" (input)="search()" class="form-control" placeholder="Search customers">
-    </div>
-  
-    <!-- Customer List with Pagination, Sorting, and Inline Editing -->
-    <table class="table table-striped">
-      <thead>
-        <tr>
-          <th (click)="sort('firstName')" class="sortable">First Name <span *ngIf="sortColumn === 'firstName'">{{ sortDirection === 'asc' ? '▲' : '▼' }}</span></th>
-          <th (click)="sort('lastName')" class="sortable">Last Name <span *ngIf="sortColumn === 'lastName'">{{ sortDirection === 'asc' ? '▲' : '▼' }}</span></th>
-          <th (click)="sort('company')" class="sortable">Company <span *ngIf="sortColumn === 'company'">{{ sortDirection === 'asc' ? '▲' : '▼' }}</span></th>
-          <th (click)="sort('phoneNumber')" class="sortable">Phone Number <span *ngIf="sortColumn === 'phoneNumber'">{{ sortDirection === 'asc' ? '▲' : '▼' }}</span></th>
-          <th (click)="sort('salary')" class="sortable">Salary <span *ngIf="sortColumn === 'salary'">{{ sortDirection === 'asc' ? '▲' : '▼' }}</span></th>
-          <th>Actions</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let customer of filteredCustomers">
-          <td>
-            <input *ngIf="editingCustomer && customer.id === editingCustomer.id" [(ngModel)]="editingCustomer.firstName" class="form-control">
-            <span *ngIf="!editingCustomer || customer.id !== editingCustomer.id">{{ customer.firstName }}</span>
-          </td>
-          <td>
-            <input *ngIf="editingCustomer && customer.id === editingCustomer.id" [(ngModel)]="editingCustomer.lastName" class="form-control">
-            <span *ngIf="!editingCustomer || customer.id !== editingCustomer.id">{{ customer.lastName }}</span>
-          </td>
-          <td>
-            <input *ngIf="editingCustomer && customer.id === editingCustomer.id" [(ngModel)]="editingCustomer.company" class="form-control">
-            <span *ngIf="!editingCustomer || customer.id !== editingCustomer.id">{{ customer.company }}</span>
-          </td>
-          <td>
-            <input *ngIf="editingCustomer && customer.id === editingCustomer.id" [(ngModel)]="editingCustomer.phoneNumber" class="form-control">
-            <span *ngIf="!editingCustomer || customer.id !== editingCustomer.id">{{ customer.phoneNumber }}</span>
-          </td>
-          <td>
-            <input *ngIf="editingCustomer && customer.id === editingCustomer.id" [(ngModel)]="editingCustomer.salary" class="form-control">
-            <span *ngIf="!editingCustomer || customer.id !== editingCustomer.id">{{ customer.salary }}</span>
-          </td>
-          <td>
-            <button *ngIf="!editingCustomer || customer.id !== editingCustomer.id" class="btn btn-sm btn-warning" (click)="editCustomer(customer)">Edit</button>
-            <button *ngIf="editingCustomer && customer.id === editingCustomer.id" class="btn btn-sm btn-success" (click)="updateCustomer()">Save</button>
-            <button *ngIf="editingCustomer && customer.id === editingCustomer.id" class="btn btn-sm btn-secondary ml-2" (click)="cancelEdit()">Cancel</button>
-            <button *ngIf="!editingCustomer || customer.id !== editingCustomer.id" class="btn btn-sm btn-danger ml-2" (click)="deleteCustomer(customer.id)">Delete</button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  
-    <!-- Pagination Controls -->
-    <ngb-pagination [(page)]="page" [pageSize]="pageSize" [collectionSize]="customers.length" (pageChange)="setPage(page)"></ngb-pagination>
-  
-    <!-- Page Size Selector -->
-    <div class="form-group mt-2">
-      <label for="pageSize">Items per page:</label>
-      <select [(ngModel)]="pageSize" (change)="setPageSize(pageSize)" class="form-control" style="width: auto; display: inline-block;">
-        <option *ngFor="let size of [5, 10, 20, 50]" [value]="size">{{ size }}</option>
-      </select>
-    </div>
-  
-    <!-- File Upload -->
-    <h3 class="mt-4">Upload Customer Details</h3>
-    <input type="file" (change)="handleFileInput($event)" class="form-control-file">
-    <button class="btn btn-primary mt-2" (click)="uploadFile()">Upload</button>
+
+  <!-- Search Box -->
+  <div class="form-group">
+    <input type="text" [(ngModel)]="searchQuery" (input)="search()" class="form-control" placeholder="Search customers">
   </div>
+  <hr>
+<div>
+  <ngb-pagination [(page)]="page" [pageSize]="pageSize" [collectionSize]="customers.length"
+  (pageChange)="setPage(page)"></ngb-pagination>
+</div>
+
+  <!-- Customer List with Pagination, Sorting, and Inline Editing -->
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th (click)="sort('firstName')" class="sortable">First Name <span *ngIf="sortColumn === 'firstName'">{{
+            sortDirection === 'asc' ? '▲' : '▼' }}</span></th>
+        <th (click)="sort('lastName')" class="sortable">Last Name <span *ngIf="sortColumn === 'lastName'">{{
+            sortDirection === 'asc' ? '▲' : '▼' }}</span></th>
+        <th (click)="sort('company')" class="sortable">Company <span *ngIf="sortColumn === 'company'">{{ sortDirection
+            === 'asc' ? '▲' : '▼' }}</span></th>
+        <th (click)="sort('phoneNumber')" class="sortable">Phone Number <span *ngIf="sortColumn === 'phoneNumber'">{{
+            sortDirection === 'asc' ? '▲' : '▼' }}</span></th>
+        <th (click)="sort('salary')" class="sortable">Salary <span *ngIf="sortColumn === 'salary'">{{ sortDirection ===
+            'asc' ? '▲' : '▼' }}</span></th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let customer of filteredCustomers">
+        <td>
+          <input *ngIf="editingCustomer && customer.id === editingCustomer.id" [(ngModel)]="editingCustomer.firstName"
+            class="form-control">
+          <span *ngIf="!editingCustomer || customer.id !== editingCustomer.id">{{ customer.firstName }}</span>
+        </td>
+        <td>
+          <input *ngIf="editingCustomer && customer.id === editingCustomer.id" [(ngModel)]="editingCustomer.lastName"
+            class="form-control">
+          <span *ngIf="!editingCustomer || customer.id !== editingCustomer.id">{{ customer.lastName }}</span>
+        </td>
+        <td>
+          <input *ngIf="editingCustomer && customer.id === editingCustomer.id" [(ngModel)]="editingCustomer.company"
+            class="form-control">
+          <span *ngIf="!editingCustomer || customer.id !== editingCustomer.id">{{ customer.company }}</span>
+        </td>
+        <td>
+          <input *ngIf="editingCustomer && customer.id === editingCustomer.id" [(ngModel)]="editingCustomer.phoneNumber"
+            class="form-control">
+          <span *ngIf="!editingCustomer || customer.id !== editingCustomer.id">{{ customer.phoneNumber }}</span>
+        </td>
+        <td>
+          <input *ngIf="editingCustomer && customer.id === editingCustomer.id" [(ngModel)]="editingCustomer.salary"
+            class="form-control">
+          <span *ngIf="!editingCustomer || customer.id !== editingCustomer.id">{{ customer.salary }}</span>
+        </td>
+        <td>
+          <div class="d-flex">
+            <button *ngIf="!editingCustomer || customer.id !== editingCustomer.id" class="btn btn-sm btn-warning mr-2"
+              (click)="editCustomer(customer)">Edit</button>
+            <button *ngIf="editingCustomer && customer.id === editingCustomer.id" class="btn btn-sm btn-success ml-2"
+              (click)="updateCustomer()">Save</button>
+            <button *ngIf="editingCustomer && customer.id === editingCustomer.id" class="btn btn-sm btn-secondary ml-2"
+              (click)="cancelEdit()">Cancel</button>
+            <button *ngIf="!editingCustomer || customer.id !== editingCustomer.id" class="btn btn-sm btn-danger ml-2"
+              (click)="deleteCustomer(customer.id)">Delete</button>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- Pagination Controls -->
+  <ngb-pagination [(page)]="page" [pageSize]="pageSize" [collectionSize]="customers.length"
+    (pageChange)="setPage(page)"></ngb-pagination>
+
+  <!-- Page Size Selector -->
+  <div class="form-group mt-2">
+    <label for="pageSize">Items per page:</label>
+    <select [(ngModel)]="pageSize" (change)="setPageSize(pageSize)" class="form-control"
+      style="width: auto; display: inline-block;">
+      <option *ngFor="let size of [5, 10, 20, 50]" [value]="size">{{ size }}</option>
+    </select>
+  </div>
+
+  <!-- File Upload -->
+  <h3 class="mt-4">Upload Customer Details</h3>
+  <input type="file" (change)="handleFileInput($event)" class="form-control-file">
+  <button class="btn btn-primary mt-2" (click)="uploadFile()">Upload</button>
+</div>

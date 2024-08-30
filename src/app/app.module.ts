@@ -14,6 +14,8 @@ import { SettingsComponent } from './components/settings/settings.component';
 import { CustomerManagementComponent } from './components/customer-management/customer-management.component'; // Import your component
 
 import { CustomerService } from './services/customer.service'; // Import your service
+import { NavbarComponent } from './navbar/navbar.component';
+import { NavbarService } from './services/navbar.service';
 
 // Define routes for the application
 const appRoutes: Routes = [
@@ -33,7 +35,8 @@ const appRoutes: Routes = [
         AgentsComponent,
         ReportsComponent,
         SettingsComponent,
-        CustomerManagementComponent // Declare your component
+        CustomerManagementComponent,
+        NavbarComponent
     ],
     bootstrap: [AppComponent], imports: [BrowserModule,
         NgbModule, // Bootstrap module for Angular
@@ -41,8 +44,8 @@ const appRoutes: Routes = [
         ReactiveFormsModule, // Import HttpClientModule for making HTTP requests
         RouterModule.forRoot(appRoutes) // Routing module for the application
     ], providers: [
-        CustomerService // Provide your service so it can be injected
-        ,
+        CustomerService,
+        NavbarService,
         provideHttpClient(withInterceptorsFromDi())
     ] })
 export class AppModule { }

@@ -1,0 +1,14 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom d-flex justify-content-between">
+  <div class="d-flex align-items-center">
+    <button class="btn btn-primary mx-3" id="menu-toggle" (click)="toggleMenu()">
+      <i class="fas" [ngClass]="isMenuOpen ? 'fa-angle-left' : 'fa-bars'"></i>
+    </button>
+    <span class="navbar-brand ml-2">{{ pageTitle }}</span>
+  </div>
+
+  <div *ngIf="menuItems.length > 0">
+    <ng-container *ngFor="let item of menuItems">
+      <button class="btn mr-2" [ngClass]="item.class" (click)="item.action()">{{ item.label }}</button>
+    </ng-container>
+  </div>
+</nav>

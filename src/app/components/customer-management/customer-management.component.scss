@@ -1,9 +1,23 @@
 /* customer-management.component.css */
 
+.d-flex {
+  display: flex;
+  align-items: center;
+}
+
 .sortable {
-    cursor: pointer;
-  }
-  
-  .sortable:hover {
-    text-decoration: underline;
-  }
+  cursor: pointer;
+}
+
+.sortable:hover {
+  text-decoration: underline;
+}
+
+/* Add some space between the buttons */
+.btn {
+  margin-right: 5px;
+}
+
+.btn:last-child {
+  margin-right: 0;
+}
