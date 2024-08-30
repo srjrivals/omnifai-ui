@@ -1,20 +1,35 @@
-/* styles.css */
+/* styles.css or app.component.css */
 #wrapper {
   display: flex;
   align-items: stretch;
 }
 
 #sidebar-wrapper {
+  margin-left: 0; 
+  width: 250px;
   min-height: 100vh;
-  margin-left: -15rem;
-  transition: margin .25s ease-out;
+  transition: margin 0.25s ease;
 }
 
 #wrapper.toggled #sidebar-wrapper {
-  margin-left: 0;
+  /* Show sidebar */
+  margin-left: -250px; 
+  transition: margin 0.25s ease;
 }
 
 #page-content-wrapper {
   width: 100%;
-  padding: 20px;
+  transition: margin 0.25s ease;
+}
+
+#wrapper.toggled #page-content-wrapper {
+  //margin-left: 250px; /* Push content to the right when sidebar is visible */
+}
+
+#menu-toggle {
+  transition: transform 0.25s ease;
+}
+
+.list-group-item i {
+  margin-right: 8px;
 }
