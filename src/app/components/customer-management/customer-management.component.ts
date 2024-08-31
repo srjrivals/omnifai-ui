@@ -1,14 +1,15 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CustomerService } from '../../services/customer.service';
 import { Customer } from '../../models/customer';
 import { NavbarService } from '../../services/navbar.service';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-customer-management',
   templateUrl: './customer-management.component.html',
   styleUrls: ['./customer-management.component.scss']
 })
-export class CustomerManagementComponent implements OnInit {
+export class CustomerManagementComponent implements OnInit, OnDestroy {
 
   pageName = 'list';
 
@@ -29,7 +30,12 @@ export class CustomerManagementComponent implements OnInit {
   sortColumn = '';
   sortDirection: 'asc' | 'desc' = 'asc';
 
-  constructor(private customerService: CustomerService, private navbarService: NavbarService) { }
+  constructor(private router: Router,
+    private route: ActivatedRoute, private customerService: CustomerService, private navbarService: NavbarService) { }
+
+  ngOnDestroy(): void {
+    this.navbarService.setMenuItems([]);
+  }
 
   ngOnInit(): void {
     this.navbarService.setPageTitle(this.pageTitle);
@@ -108,11 +114,11 @@ export class CustomerManagementComponent implements OnInit {
   }
 
   showCustomerList() {
-    this.pageName = 'list';
+    this.router.navigate(['list'], { relativeTo: this.route });
   }
 
   uploadCustomers() {
-    this.pageName = 'upload';
+    this.router.navigate(['upload'], { relativeTo: this.route });
   }
 
   filterAndSortCustomers(): void {

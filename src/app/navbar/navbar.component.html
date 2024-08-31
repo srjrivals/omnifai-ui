@@ -8,7 +8,12 @@
 
   <div *ngIf="menuItems.length > 0">
     <ng-container *ngFor="let item of menuItems">
-      <button class="btn mr-2" [ngClass]="item.class" (click)="item.action()">{{ item.label }}</button>
+      <button 
+        class="btn mr-2" 
+        [ngClass]="item.class + (item.label === activeMenu ? ' active' : '')" 
+        (click)="item.action()">
+        {{ item.label }}
+      </button>
     </ng-container>
   </div>
 </nav>
