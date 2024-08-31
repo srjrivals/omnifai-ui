@@ -1,0 +1,59 @@
+.section-heading {
+  font-size: 1.5rem;
+  margin-bottom: 20px;
+  text-transform: uppercase;
+  font-weight: bold;
+}
+
+.calls-section, .customers-section, .charts-section {
+  background-color: #343a40;
+  border-radius: 8px;
+  margin-bottom: 30px;
+  padding: 20px;
+}
+
+.equal-height {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.equal-height .card {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 0; /* Remove bottom margin for equal height cards */
+  height: 100%; /* Ensures equal height */
+}
+
+.card {
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.card-title {
+  font-size: 1.2rem;
+  margin-bottom: 15px;
+}
+
+.card-text {
+  font-size: 2rem;
+  font-weight: bold;
+}
+
+ul.list-group {
+  font-size: 1.1rem;
+}
+
+.canvas-container {
+  position: relative;
+  height: 400px;
+}
+
+.pagination-jazzy {
+  display: inline-flex;
+  margin-top: 10px;
+}

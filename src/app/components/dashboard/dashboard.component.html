@@ -1,1 +1,98 @@
-<p>dashboard works!</p>
+<div class="container mt-4">
+  <!-- Calls Section -->
+  <div class="calls-section mb-4 p-4">
+    <h2 class="section-heading text-white">Call Statistics</h2>
+    <div class="row equal-height">
+      <div class="col-md-3">
+        <div class="card text-white bg-primary mb-3">
+          <div class="card-body">
+            <h5 class="card-title">Total Calls</h5>
+            <p class="card-text display-4">{{ totalCalls }}</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="card text-white bg-success mb-3">
+          <div class="card-body">
+            <h5 class="card-title">Resolved Calls</h5>
+            <p class="card-text display-4">{{ resolvedCalls }}</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="card text-white bg-warning mb-3">
+          <div class="card-body">
+            <h5 class="card-title">Pending Calls</h5>
+            <p class="card-text display-4">{{ pendingCalls }}</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="card text-white bg-danger mb-3">
+          <div class="card-body">
+            <h5 class="card-title">Dropped Calls</h5>
+            <p class="card-text display-4">{{ droppedCalls }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Customers Section -->
+  <div class="customers-section mb-4 p-4">
+    <h2 class="section-heading text-white">Customer Statistics</h2>
+    <div class="row equal-height">
+      <div class="col-md-4">
+        <div class="card text-white bg-primary mb-3">
+          <div class="card-body">
+            <h5 class="card-title">Total Customers</h5>
+            <p class="card-text display-4">{{ totalCustomers }}</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card text-white bg-success mb-3">
+          <div class="card-body">
+            <h5 class="card-title">Customers Reached</h5>
+            <p class="card-text display-4">{{ customersReached }}</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card text-white bg-warning mb-3">
+          <div class="card-body">
+            <h5 class="card-title">Customers Yet to be Called</h5>
+            <p class="card-text display-4">{{ customersYetToBeCalled }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Charts Section -->
+  <div class="charts-section p-4">
+    <h2 class="section-heading text-white">Performance Analytics</h2>
+    <div class="row">
+      <div class="col-md-8">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">Call Volume Over Time</h5>
+            <canvas id="callVolumeChart"></canvas>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">Top Performing Agents</h5>
+            <ul class="list-group">
+              <li class="list-group-item" *ngFor="let agent of topAgents">
+                <strong>{{ agent.name }}</strong> - {{ agent.callsHandled }} calls
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

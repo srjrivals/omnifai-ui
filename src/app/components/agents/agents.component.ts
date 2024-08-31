@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { NavbarService } from '../../services/navbar.service';
 
 @Component({
   selector: 'app-agents',
@@ -6,5 +7,12 @@ import { Component } from '@angular/core';
   styleUrl: './agents.component.scss'
 })
 export class AgentsComponent {
+  pageTitle = 'Agents';
+
+  constructor(private navbarService: NavbarService) {}
+  
+  ngOnInit() {
+    this.navbarService.setPageTitle(this.pageTitle);
+  }
 
 }
