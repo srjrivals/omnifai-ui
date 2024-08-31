@@ -10,6 +10,8 @@ import { NavbarService } from '../../services/navbar.service';
 })
 export class CustomerManagementComponent implements OnInit {
 
+  pageName = 'list';
+
   pageTitle = 'Customer Management';
   customers: Customer[] = [];
   filteredCustomers: Customer[] = [];
@@ -35,6 +37,7 @@ export class CustomerManagementComponent implements OnInit {
       { label: 'Customer List', action: this.showCustomerList.bind(this), class: 'btn-secondary' },
       { label: 'Upload', action: this.uploadCustomers.bind(this), class: 'btn-success' }
     ]);
+
     this.getCustomers();
   }
 
@@ -45,41 +48,7 @@ export class CustomerManagementComponent implements OnInit {
     });
   }
 
-  filterAndSortCustomers(): void {
-    let filtered = [...this.customers];
 
-    // Filter by search query
-    if (this.searchQuery) {
-      filtered = filtered.filter(customer =>
-        customer.firstName.toLowerCase().includes(this.searchQuery.toLowerCase()) ||
-        customer.lastName.toLowerCase().includes(this.searchQuery.toLowerCase()) ||
-        customer.company.toLowerCase().includes(this.searchQuery.toLowerCase()) ||
-        customer.phoneNumber.includes(this.searchQuery) ||
-        customer.salary.includes(this.searchQuery)
-      );
-    }
-
-    // Sort by selected column
-    if (this.sortColumn) {
-      filtered.sort((a, b) => {
-        const aValue = (a as any)[this.sortColumn];
-        const bValue = (b as any)[this.sortColumn];
-        return (aValue > bValue ? 1 : -1) * (this.sortDirection === 'asc' ? 1 : -1);
-      });
-    }
-
-    this.filteredCustomers = filtered.slice((this.page - 1) * this.pageSize, this.page * this.pageSize);
-  }
-
-  setPage(page: number): void {
-    this.page = page;
-    this.filterAndSortCustomers();
-  }
-
-  setPageSize(size: number): void {
-    this.pageSize = size;
-    this.filterAndSortCustomers();
-  }
 
   sort(column: string): void {
     if (this.sortColumn === column) {
@@ -92,6 +61,7 @@ export class CustomerManagementComponent implements OnInit {
   }
 
   search(): void {
+    this.page = 1;  // Reset to first page on new search
     this.filterAndSortCustomers();
   }
 
@@ -138,12 +108,50 @@ export class CustomerManagementComponent implements OnInit {
   }
 
   showCustomerList() {
-    // Implement the logic to show customer list
-    console.log('Customer List button clicked');
+    this.pageName = 'list';
   }
 
   uploadCustomers() {
-    // Implement the logic to upload customers
-    console.log('Upload button clicked');
+    this.pageName = 'upload';
+  }
+
+  filterAndSortCustomers(): void {
+    let filtered = [...this.customers];
+
+    // Filter by search query
+    if (this.searchQuery) {
+      filtered = filtered.filter(customer =>
+        customer.firstName.toLowerCase().includes(this.searchQuery.toLowerCase()) ||
+        customer.lastName.toLowerCase().includes(this.searchQuery.toLowerCase()) ||
+        customer.company.toLowerCase().includes(this.searchQuery.toLowerCase()) ||
+        customer.phoneNumber.includes(this.searchQuery) ||
+        customer.salary.includes(this.searchQuery)
+      );
+    }
+
+    // Sort by selected column
+    if (this.sortColumn) {
+      filtered.sort((a, b) => {
+        const aValue = (a as any)[this.sortColumn];
+        const bValue = (b as any)[this.sortColumn];
+        return (aValue > bValue ? 1 : -1) * (this.sortDirection === 'asc' ? 1 : -1);
+      });
+    }
+
+    // Apply pagination after filtering and sorting
+    const startIndex = (this.page - 1) * this.pageSize;
+    const endIndex = startIndex + this.pageSize;
+    this.filteredCustomers = filtered.slice(startIndex, endIndex);
+  }
+
+  setPage(page: number): void {
+    this.page = page;
+    this.filterAndSortCustomers();
+  }
+
+  setPageSize(size: number): void {
+    this.pageSize = size;
+    this.page = 1; // Reset to first page when page size changes
+    this.filterAndSortCustomers();
   }
 }

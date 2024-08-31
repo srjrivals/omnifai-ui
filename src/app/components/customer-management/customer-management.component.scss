@@ -21,3 +21,74 @@
 .btn:last-child {
   margin-right: 0;
 }
+/* Add spacing between pagination and other elements */
+.pagination {
+  margin: 0;
+}
+
+/* Ensure consistent button spacing in actions column */
+.table td .btn {
+  margin-right: 5px;
+}
+
+/* Pagination with a jazzy look */
+.pagination-jazzy .page-item .page-link {
+  color: #007bff;
+  border: 1px solid #007bff;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.pagination-jazzy .page-item.active .page-link {
+  background-color: #007bff;
+  color: white;
+  border-color: #007bff;
+}
+
+.pagination-jazzy .page-item:hover .page-link {
+  background-color: #0056b3;
+  color: white;
+  border-color: #0056b3;
+}
+
+/* Add margin to separate the items per page selector from the pagination controls */
+.form-group.ml-4 {
+  margin-left: 20px;
+}
+
+/* Make table headers bold and visually appealing */
+.table thead th.sortable {
+  cursor: pointer;
+  position: relative;
+}
+
+.table thead th.sortable:after {
+  content: ' ';
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  border-width: 0 4px 4px 4px;
+  border-style: solid;
+  border-color: transparent transparent #007bff transparent;
+}
+
+.table thead th.sortable.asc:after {
+  border-bottom-color: transparent;
+  border-top-color: #007bff;
+}
+
+/* Add some padding and hover effects to action buttons */
+.table td .btn {
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.table td .btn:hover {
+  background-color: #0056b3;
+  color: white;
+}
+
+/* Add subtle hover effects to table rows */
+.table-hover tbody tr:hover {
+  background-color: #f1f1f1;
+}
+
