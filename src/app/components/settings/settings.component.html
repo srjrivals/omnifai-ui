@@ -1,1 +1,38 @@
-<p>settings works!</p>
+<div class="container mt-4">
+    <h2>{{ pageTitle }}</h2>
+    <form [formGroup]="form">
+      <!-- Time Window Input -->
+      <div class="form-group">
+        <label for="timeWindow">Time Window of the Day</label>
+        <select id="timeWindow" class="form-control" formControlName="timeWindow">
+          <option *ngFor="let window of timeWindows" [value]="window">{{ window }}</option>
+        </select>
+      </div>
+  
+      <!-- Days of the Week Checkboxes -->
+      <div class="form-group">
+        <label>Days of the Week</label>
+        <div *ngFor="let day of daysOfWeekOptions">
+          <input
+            type="checkbox"
+            class="form-check-input"
+            [formControlName]="day.toLowerCase()"
+          />
+          <label class="form-check-label">{{ day }}</label>
+        </div>
+      </div>
+  
+      <!-- Reach Frequency Inputs -->
+      <div class="form-group">
+        <label for="timesPerDay">Times per Day</label>
+        <input type="number" id="timesPerDay" class="form-control" formControlName="timesPerDay" min="1" />
+      </div>
+  
+      <div class="form-group">
+        <label for="timesPerWeek">Times per Week</label>
+        <input type="number" id="timesPerWeek" class="form-control" formControlName="timesPerWeek" min="1" />
+      </div>
+  
+      <button type="button" class="btn btn-primary mt-2" (click)="saveSettings()">Save Call Settings</button>
+    </form>
+  </div>
