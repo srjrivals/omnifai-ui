@@ -43,6 +43,7 @@ export class SettingsComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.callSettingsService.getCallSettings().subscribe(settingsArray => {
       if (settingsArray && settingsArray.length > 0) {
+        this.timeWindows = Array.from(new Set(settingsArray.map(setting => setting.timeWindow)));
         const activeSetting = settingsArray.find(s => s.active); // Find the active setting
         if (activeSetting) {
           this.currentSettingsId = activeSetting.id;

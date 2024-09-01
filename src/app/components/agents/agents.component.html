@@ -1,1 +1,84 @@
-<p>agents works!</p>
+<div class="container mt-4">
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h2>{{ pageTitle }}</h2>
+    <button class="btn btn-primary" (click)="toggleAddAgentForm()">
+      <i class="fas fa-user-plus"></i> Add Agent
+    </button>
+  </div>
+
+  <!-- Add Agent Form -->
+  <div *ngIf="showAddAgentForm" class="card mb-4">
+    <div class="card-body">
+      <form [formGroup]="agentForm" (ngSubmit)="addAgent()">
+        <div class="form-group">
+          <label for="firstName">First Name</label>
+          <input id="firstName" class="form-control" formControlName="firstName" placeholder="Agent first name" required />
+        </div>
+        <div class="form-group">
+          <label for="lastName">Last Name</label>
+          <input id="lastName" class="form-control" formControlName="lastName" placeholder="Agent last name" required />
+        </div>
+        <div class="form-group">
+          <label for="agentType">Type</label>
+          <select id="agentType" class="form-control" formControlName="agentType" required>
+            <option value="Human">Human</option>
+            <option value="AI Bot">AI Bot</option>
+          </select>
+        </div>
+
+        <button type="submit" class="btn btn-success mt-2">Add Agent</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Existing Agents List -->
+  <div *ngIf="agents.length > 0">
+    <h3>Existing Agents</h3>
+    <ul class="list-group">
+      <li class="list-group-item" *ngFor="let agent of agents">
+        {{ agent.firstName  }} {{ agent.lastName  }} ({{ agent.agentType }})
+      </li>
+    </ul>
+  </div>
+</div>
+
+<div class="container mt-4">
+  <h2>{{ pageTitle }}</h2>
+
+  <!-- Customer List with Calls Today and This Week -->
+  <table class="table table-hover table-striped table-bordered">
+    <thead class="thead-dark">
+      <tr>
+        <th>First Name</th>
+        <th>Last Name</th>
+        <th>Phone Number</th>
+        <th>Calls Today</th>
+        <th>Calls This Week</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let customer of customers">
+        <td>{{ customer.firstName }}</td>
+        <td>{{ customer.lastName }}</td>
+        <td>{{ customer.phoneNumber }}</td>
+        <td>
+          <ng-container *ngIf="customer.callsToday !== undefined; else loadingToday">
+            {{ customer.callsToday }}
+          </ng-container>
+          <ng-template #loadingToday>Loading...</ng-template>
+        </td>
+        <td>
+          <ng-container *ngIf="customer.callsThisWeek !== undefined; else loadingWeek">
+            {{ customer.callsThisWeek }}
+          </ng-container>
+          <ng-template #loadingWeek>Loading...</ng-template>
+        </td>
+        <td>
+          <button class="btn btn-sm btn-primary">View</button>
+          <!-- Additional actions like edit or delete could be added here -->
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

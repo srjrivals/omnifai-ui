@@ -16,6 +16,8 @@ import { CustomerManagementComponent } from './components/customer-management/cu
 import { CustomerService } from './services/customer.service'; // Import your service
 import { NavbarComponent } from './navbar/navbar.component';
 import { NavbarService } from './services/navbar.service';
+import { CallLogService } from './services/call-log.service';
+import { AgentService } from './services/agent.service';
 
 // Define routes for the application
 const appRoutes: Routes = [
@@ -46,6 +48,8 @@ const appRoutes: Routes = [
     ], providers: [
         CustomerService,
         NavbarService,
+        CallLogService,
+        AgentService,
         provideHttpClient(withInterceptorsFromDi())
     ] })
 export class AppModule { }
