@@ -1,4 +1,4 @@
-<div class="container mt-4">
+<div class="container mt-4" *ngIf="currentSection === 'add'">
   <div class="d-flex justify-content-between align-items-center mb-3">
     <h2>{{ pageTitle }}</h2>
     <button class="btn btn-primary" (click)="toggleAddAgentForm()">
@@ -31,20 +31,25 @@
     </div>
   </div>
 
-  <!-- Existing Agents List -->
-  <div *ngIf="agents.length > 0">
-    <h3>Existing Agents</h3>
-    <ul class="list-group">
-      <li class="list-group-item" *ngFor="let agent of agents">
-        {{ agent.firstName  }} {{ agent.lastName  }} ({{ agent.agentType }})
-      </li>
-    </ul>
+  <!-- Existing Agents Grid -->
+  <div *ngIf="agents.length > 0" class="row">
+    <div *ngFor="let agent of agents" class="col-lg-4 col-md-6 mb-4">
+      <div class="card h-100 text-center">
+        <div class="card-body">
+          <div class="icon-container mb-3">
+            <i class="fas" [ngClass]="agent.agentType === 'Human' ? 'fa-user' : 'fa-robot'"></i>
+          </div>
+          <h5 class="card-title mb-2">{{ agent.firstName }} {{ agent.lastName }}</h5>
+          <p class="card-text">{{ agent.agentType }}</p>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
 
-<div class="container mt-4">
-  <h2>{{ pageTitle }}</h2>
 
+<div class="container mt-4" *ngIf="currentSection === 'list'">
+  <h2>Customers</h2>
   <!-- Customer List with Calls Today and This Week -->
   <table class="table table-hover table-striped table-bordered">
     <thead class="thead-dark">
@@ -58,7 +63,7 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let customer of customers">
+      <tr *ngFor="let customer of paginatedCustomers">
         <td>{{ customer.firstName }}</td>
         <td>{{ customer.lastName }}</td>
         <td>{{ customer.phoneNumber }}</td>
@@ -75,10 +80,21 @@
           <ng-template #loadingWeek>Loading...</ng-template>
         </td>
         <td>
-          <button class="btn btn-sm btn-primary">View</button>
-          <!-- Additional actions like edit or delete could be added here -->
+          <button class="btn btn-sm btn-primary"><i class="fas fa-phone"></i>  Log a call</button>
         </td>
       </tr>
     </tbody>
   </table>
+
+  <!-- Bottom Pagination Controls -->
+  <div class="d-flex justify-content-between align-items-center mt-3">
+    <div class="form-group mb-0">
+      <label for="pageSize" class="mr-2">Items per page:</label>
+      <select [(ngModel)]="pageSize" (change)="setPageSize(pageSize)" class="form-control form-control-sm">
+        <option *ngFor="let size of [5, 10, 20, 50]" [value]="size">{{ size }}</option>
+      </select>
+    </div>
+    <ngb-pagination [(page)]="page" [pageSize]="pageSize" [collectionSize]="customers.length"
+      (pageChange)="setPage(page)" class="pagination-jazzy"></ngb-pagination>
+  </div>
 </div>

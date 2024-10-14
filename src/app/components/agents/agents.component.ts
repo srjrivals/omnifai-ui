@@ -7,6 +7,7 @@ import { Customer } from '../../models/customer';
 import { CallLog } from '../../models/call-log.model';
 import { Agent } from '../../models/agent.model';
 import { catchError, of } from 'rxjs';
+import { NavbarService } from '../../services/navbar.service';
 
 @Component({
   selector: 'app-agents',
@@ -16,6 +17,7 @@ import { catchError, of } from 'rxjs';
 export class AgentsComponent implements OnInit {
   pageTitle = 'Agents'
   customers: Customer[] = [];
+  paginatedCustomers: Customer[] = [];
   agents: Agent[] = [];
   callLogsToday: { [customerId: number]: CallLog[] } = {};
   callLogsThisWeek: { [customerId: number]: CallLog[] } = {};
@@ -24,11 +26,17 @@ export class AgentsComponent implements OnInit {
 
   showAddAgentForm = false;
 
+  currentSection: 'list' | 'add' = 'list';
+
+  page = 1;
+  pageSize = 10;
+
   constructor(
     private fb: FormBuilder,
     private agentService: AgentService,
     private callLogService: CallLogService,
-    private customerService: CustomerService
+    private customerService: CustomerService,
+    private navbarService: NavbarService
   ) {
     this.agentForm = this.fb.group({
       firstName: ['', Validators.required],
@@ -38,6 +46,11 @@ export class AgentsComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.navbarService.setPageTitle(this.pageTitle);
+    this.navbarService.setMenuItems([
+      { label: 'Customer List', action: () => this.showSection('list'), class: 'btn-secondary active' },
+      { label: 'Agents', action: () => this.showSection('add'), class: 'btn-secondary' }
+    ]);
     this.getCustomersWithCallData();
     this.loadAgents();
   }
@@ -56,32 +69,20 @@ export class AgentsComponent implements OnInit {
   getCallDataForCustomer(customer: Customer): void {
     let todayCallsFetched = false;
     let weekCallsFetched = false;
-  
+
     // Get calls for today
-    this.callLogService.getCallsForToday(customer.id)
+    this.callLogService.getCallsForCustomer(customer.id)
       .pipe(
         catchError(error => {
           console.error('Error fetching calls for today', error);
           return of([]); // Return an empty array if there's an error
         })
       )
-      .subscribe(callsToday => {
-        customer.callsToday = callsToday.length;
+      .subscribe(calls => {
+        customer.callsToday = calls.length;
+        customer.callsThisWeek = calls.length;
+        this.updateCustomerInList(customer);
         todayCallsFetched = true;
-        this.checkIfDataLoadingComplete(todayCallsFetched, weekCallsFetched, customer);
-      });
-  
-    // Get calls for this week
-    this.callLogService.getCallsForThisWeek(customer.id)
-      .pipe(
-        catchError(error => {
-          console.error('Error fetching calls for this week', error);
-          return of([]); // Return an empty array if there's an error
-        })
-      )
-      .subscribe(callsThisWeek => {
-        customer.callsThisWeek = callsThisWeek.length;
-        weekCallsFetched = true;
         this.checkIfDataLoadingComplete(todayCallsFetched, weekCallsFetched, customer);
       });
   }
@@ -127,5 +128,33 @@ export class AgentsComponent implements OnInit {
         console.error('Error loading agents:', error);
       }
     );
+  }
+
+  showSection(section: 'list' | 'add'): void {
+    this.currentSection = section;
+    this.navbarService.setMenuItems([
+      { label: 'Customer List', action: () => this.showSection('list'), class: section === 'list' ? 'btn-primary' : 'btn-secondary' },
+      { label: 'Agents', action: () => this.showSection('add'), class: section === 'add' ? 'btn-primary' : 'btn-secondary' }
+    ]);
+  }
+
+  updateCustomerInList(updatedCustomer: Customer): void {
+    const index = this.customers.findIndex(c => c.id === updatedCustomer.id);
+    if (index !== -1) {
+      this.customers[index] = { ...updatedCustomer };
+      this.setPage(this.page); // Update pagination after data update
+    }
+  }
+
+  setPage(page: number): void {
+    this.page = page;
+    const start = (this.page - 1) * this.pageSize;
+    const end = start + this.pageSize;
+    this.paginatedCustomers = this.customers.slice(start, end);
+  }
+
+  setPageSize(size: number): void {
+    this.pageSize = size;
+    this.setPage(1); // Reset to first page
   }
 }

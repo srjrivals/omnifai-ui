@@ -19,4 +19,8 @@ export class CallLogService {
   getCallsForThisWeek(customerId): Observable<CallLog[]> {
     return this.http.get<CallLog[]>(`${this.baseUrl}/this-week/${customerId}`);
   }
+
+  getCallsForCustomer(customerId): Observable<CallLog[]> {
+    return this.http.get<CallLog[]>(`${this.baseUrl}/all/${customerId}`);
+  }
 }
